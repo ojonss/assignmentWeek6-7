@@ -28,11 +28,5 @@
     "articleNumber": "CB-6000",
     "price": 1200,
     "description": "A heavy-duty conveyor belt designed for efficient material handling in factories."
-  },
-  {
-    "name": "New Item",
-    "articleNumber": "54321",
-    "price": 100,
-    "description": "A new item added"
   }
 ]
