@@ -4,23 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Industrial Products</title>
-    <style>
-        /* Simple styling */
-        body {
-            font-family: Arial, sans-serif;
-        }
-        form {
-            margin-bottom: 20px;
-        }
-        #items-list {
-            margin-top: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
     <h1>Industrial Products</h1>
 
-    <!-- Form to create a new item -->
     <h2>Add New Product</h2>
     <form id="addItemForm">
         <label for="name">Product Name:</label>
@@ -34,7 +22,6 @@
         <button type="submit">Add Product</button>
     </form>
 
-    <!-- Form to update an item -->
     <h2>Update Product</h2>
     <form id="updateItemForm">
         <label for="updateArticleNumber">Article Number:</label>
@@ -48,17 +35,15 @@
         <button type="submit">Update Product</button>
     </form>
 
-    <!-- Section to list all items -->
     <h2>All Products</h2>
     <div id="items-list"></div>
 
-    <!-- Form to delete an item -->
     <h2>Delete Product</h2>
     <label for="deleteArticleNumber">Article Number:</label>
     <input type="text" id="deleteArticleNumber">
     <button onclick="deleteItem()">Delete Product</button>
 
-    <!-- Include the external JS file -->
+
     <script src="/app.js"></script>
 </body>
 </html>

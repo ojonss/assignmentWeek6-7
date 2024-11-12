@@ -23,7 +23,7 @@ document.getElementById('addItemForm').addEventListener('submit', async (e) => {
         
         const result = await response.json();
         console.log('Created:', result);
-        fetchItems();  // Refresh the item list
+        fetchItems();  
     } catch (error) {
         console.error('Error adding item:', error);
     }
@@ -51,7 +51,7 @@ document.getElementById('updateItemForm').addEventListener('submit', async (e) =
 
         const result = await response.json();
         console.log('Updated:', result);
-        fetchItems();  // Refresh the item list
+        fetchItems();  
     } catch (error) {
         console.error('Error updating item:', error);
     }
@@ -63,7 +63,7 @@ async function fetchItems() {
         const response = await fetch('http://localhost:3000/items');
         const items = await response.json();
         const itemsList = document.getElementById('items-list');
-        itemsList.innerHTML = '';  // Clear previous list
+        itemsList.innerHTML = ''; 
 
         items.forEach(item => {
             const itemDiv = document.createElement('div');
@@ -91,7 +91,7 @@ async function deleteItem() {
 
         if (response.ok) {
             console.log('Deleted item');
-            fetchItems();  // Refresh the item list
+            fetchItems(); 
         } else {
             console.error('Error deleting item');
         }

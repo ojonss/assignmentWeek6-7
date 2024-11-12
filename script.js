@@ -3,10 +3,6 @@ const fs = require('fs');
 const path = require('path');
 const app = express();
 const listenPort = 3000;
-
-// Middleware to parse JSON requests
-app.use(express.json());
-
 const dataFilePath = './data/industrial.json';
 let data = [];
 
@@ -48,11 +44,6 @@ function saveData() {
 
 // Load data on server start
 loadData();
-
-// Serve the HTML file
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
-});
 
 // GET all items
 app.get('/items', (req, res) => {
