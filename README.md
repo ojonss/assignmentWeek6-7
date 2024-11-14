@@ -35,7 +35,7 @@ Changes made in Admin mode are saved to `industrial.json` and are immediately re
 
 ## Explaining server.js
 
-A simple Express.js application to manage inventory items and customer orders. This API reads, writes, and updates data from JSON files and provides endpoints for handling items and orders.
+A simple server.js application to manage inventory items and customer orders. This API reads, writes, and updates data from JSON files and provides endpoints for handling items and orders.
 
 ### Home Endpoint
 - **GET /** - Serves the `index.html` file as the homepage.
