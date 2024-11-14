@@ -96,3 +96,10 @@ This interface allows users to select items and place orders with an inventory m
     2. Sends a POST request with selected items and quantities to the server.
     3. Alerts the user with the new order ID if successful or an error message if the order fails.
 
+## Things left TO:DO as of 2024-11-14
+- Add Username and Password management to **Admin** button, when signing in
+- Some sort of **user** input of name, email, adress to know where to send the package
+- Improve UI
+- Better and longer Order ID
+- Add quantities to items in `industrial.json`, so items can run out when ordering
+- Add price into `order.json` for the ordered products
