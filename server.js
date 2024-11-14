@@ -4,20 +4,20 @@ const path = require('path');
 const app = express();
 const listenPort = 3000;
 const dataFilePath = './data/industrial.json';
+const orderFilePath = './data/order.json';
 let data = [];
+let orders = [];
 
-// Middleware to parse JSON requests
 app.use(express.json());
-
-// Serve static files (JavaScript, CSS, etc.)
+//grant program access to root files
 app.use(express.static(path.join(__dirname)));
 
-// Serve the HTML file
+// home page
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Function to load data from the JSON file on startup
+// Load and save functions for industrial.json
 function loadData() {
     try {
         const fileData = fs.readFileSync(dataFilePath, 'utf8');
@@ -28,7 +28,6 @@ function loadData() {
     }
 }
 
-// Function to save data to the JSON file
 function saveData() {
     return new Promise((resolve, reject) => {
         fs.writeFile(dataFilePath, JSON.stringify(data, null, 2), (err) => {
@@ -42,32 +41,54 @@ function saveData() {
     });
 }
 
-// Load data on server start
-loadData();
+// Load and save functions for order.json
+function loadOrders() {
+    try {
+        const fileData = fs.readFileSync(orderFilePath, 'utf8');
+        orders = JSON.parse(fileData) || [];
+    } catch (error) {
+        console.error('Error loading order file:', error);
+        orders = [];
+    }
+}
 
-// GET all items
+function saveOrders() {
+    return new Promise((resolve, reject) => { 
+        fs.writeFile(orderFilePath, JSON.stringify(orders, null, 2), (err) => { //saves orders with indentation 2
+            if (err) {
+                console.error('Error saving orders:', err);
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
+    });
+}
+
+// loads .json files on start
+loadData();
+loadOrders();
+
+// Item-related endpoints
 app.get('/items', (req, res) => {
     res.json(data);
 });
 
-// GET a specific item by articleNumber
 app.get('/item/:articleNumber', (req, res) => {
     const { articleNumber } = req.params;
     const item = data.find(item => item.articleNumber === articleNumber);
     if (item) {
         res.json(item);
     } else {
-        res.status(404).send("Item not found");
+        res.send("Item not found");
     }
 });
 
-// POST to create a new item
 app.post('/item', async (req, res) => {
     const { name, articleNumber, price, description } = req.body;
 
-    // Check if item with the same articleNumber exists
     if (data.some(item => item.articleNumber === articleNumber)) {
-        return res.status(400).send('Item with this article number already exists');
+        return res.send('Item with this article number already exists');
     }
 
     const newItem = { name, articleNumber, price, description };
@@ -78,21 +99,19 @@ app.post('/item', async (req, res) => {
         console.log(`Created item ${articleNumber}`);
         res.json(newItem);
     } catch (error) {
-        res.status(500).send('Error saving data');
+        res.send('Error saving data');
     }
 });
 
-// PUT to update an existing item
 app.put('/item/:articleNumber', async (req, res) => {
     const { articleNumber } = req.params;
     const { name, price, description } = req.body;
     const item = data.find(item => item.articleNumber === articleNumber);
 
     if (!item) {
-        return res.status(404).send('Item not found');
+        return res.send('Item not found');
     }
 
-    // Update item fields if provided
     item.name = name || item.name;
     item.price = price || item.price;
     item.description = description || item.description;
@@ -102,17 +121,16 @@ app.put('/item/:articleNumber', async (req, res) => {
         console.log(`Updated item ${articleNumber}`);
         res.json(item);
     } catch (error) {
-        res.status(500).send('Error updating data');
+        res.send('Error updating data');
     }
 });
 
-// DELETE an item by article number
 app.delete('/item/:articleNumber', async (req, res) => {
     const { articleNumber } = req.params;
     const index = data.findIndex(item => item.articleNumber === articleNumber);
 
     if (index === -1) {
-        return res.status(404).send('Item not found');
+        return res.send('Item not found');
     }
 
     data.splice(index, 1);
@@ -120,13 +138,51 @@ app.delete('/item/:articleNumber', async (req, res) => {
     try {
         await saveData();
         console.log(`Deleted item ${articleNumber}`);
-        res.status(204).send();
+        res.send();
     } catch (error) {
-        res.status(500).send('Error deleting data');
+        res.send('Error deleting data');
     }
 });
 
-// Start the server
+// Order-related endpoints
+app.post('/order', async (req, res) => {
+    const { items } = req.body;
+    if (!Array.isArray(items) || items.length === 0) {
+        return res.send('Order must contain items');
+    }
+
+    const orderItems = [];
+    for (const { articleNumber, quantity } of items) {
+        const item = data.find(item => item.articleNumber === articleNumber);
+        if (!item) return res.send(`Item with article number ${articleNumber} not found`);
+        if (!quantity || quantity <= 0) return res.send('Quantity must be greater than zero');
+        orderItems.push({ articleNumber, quantity });
+    }
+
+    // saving to order.json
+    const newOrder = { id: orders.length + 1, items: orderItems };
+    orders.push(newOrder);
+    try {
+        await saveOrders();
+        console.log(`Created order ${newOrder.id}`);
+        res.json(newOrder);
+    } catch (error) {
+        res.send('Error saving order');
+    }
+});
+
+app.get('/orders', (req, res) => {
+    res.json(orders);
+});
+
+app.get('/order/:id', (req, res) => {
+    const { id } = req.params;
+    const order = orders.find(order => order.id === parseInt(id, 10));
+    if (order) res.json(order);
+    else res.send("Order not found");
+});
+
+// Start
 app.listen(listenPort, () => {
     console.log(`Server running on http://localhost:${listenPort}`);
 });

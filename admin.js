@@ -1,9 +1,32 @@
-// Fetch all items on page load
-document.addEventListener('DOMContentLoaded', fetchItems);
+// Loads .json file after DOM is loaded and ready.
+document.addEventListener('DOMContentLoaded', fetchItems());
 
-// Add new item
+// display items
+async function fetchItems() {
+    try {
+        const response = await fetch('http://localhost:3000/items');
+        const items = await response.json();
+        const itemsList = document.getElementById('items-list');
+        itemsList.innerHTML = ''; 
+
+        items.forEach(item => {
+            const itemDiv = document.createElement('div');
+            itemDiv.innerHTML = `
+                <strong>Product Name:</strong> ${item.name}<br>
+                <strong>Article Number:</strong> ${item.articleNumber}<br>
+                <strong>Price:</strong> ${item.price}<br>
+                <strong>Description:</strong> ${item.description}<br><br>
+            `;
+            itemsList.appendChild(itemDiv);
+        });
+    } catch (error) {
+        console.error('Error fetching items:', error);
+    }
+}
+
+// new item
 document.getElementById('addItemForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
+    e.preventDefault(); //stop reload page on submit
     
     const name = document.getElementById('name').value;
     const articleNumber = document.getElementById('articleNumber').value;
@@ -29,7 +52,7 @@ document.getElementById('addItemForm').addEventListener('submit', async (e) => {
     }
 });
 
-// Update existing item
+// update item
 document.getElementById('updateItemForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -56,29 +79,6 @@ document.getElementById('updateItemForm').addEventListener('submit', async (e) =
         console.error('Error updating item:', error);
     }
 });
-
-// Fetch all items and display them
-async function fetchItems() {
-    try {
-        const response = await fetch('http://localhost:3000/items');
-        const items = await response.json();
-        const itemsList = document.getElementById('items-list');
-        itemsList.innerHTML = ''; 
-
-        items.forEach(item => {
-            const itemDiv = document.createElement('div');
-            itemDiv.innerHTML = `
-                <strong>Product Name:</strong> ${item.name}<br>
-                <strong>Article Number:</strong> ${item.articleNumber}<br>
-                <strong>Price:</strong> ${item.price}<br>
-                <strong>Description:</strong> ${item.description}<br><br>
-            `;
-            itemsList.appendChild(itemDiv);
-        });
-    } catch (error) {
-        console.error('Error fetching items:', error);
-    }
-}
 
 // Delete an item by article number
 async function deleteItem() {

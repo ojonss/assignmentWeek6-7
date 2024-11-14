@@ -1,0 +1,40 @@
+[
+       {
+              "id": 1,
+              "items": [
+                     {
+                            "articleNumber": "HP-1001",
+                            "quantity": 3
+                     },
+                     {
+                            "articleNumber": "ID-2020",
+                            "quantity": 2
+                     }
+              ]
+       },
+       {
+              "id": 2,
+              "items": [
+                     {
+                            "articleNumber": "HP-1001",
+                            "quantity": 2
+                     },
+                     {
+                            "articleNumber": "ID-2020",
+                            "quantity": 1
+                     },
+                     {
+                            "articleNumber": "SH-3050",
+                            "quantity": 1
+                     },
+                     {
+                            "articleNumber": "WM-4500",
+                            "quantity": 3
+                     },
+                     {
+                            "articleNumber": "CB-6000",
+                            "quantity": 5
+                     }
+              ]
+       }
+]

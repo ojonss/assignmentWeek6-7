@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Industrial Products</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <h1>Industrial Products</h1>
+
+    <h2>All Products</h2>
+    <div id="items-list"></div>
+
+    <h2>Add New Product</h2>
+    <form id="addItemForm">
+        <label for="name">Product Name:</label>
+        <input type="text" id="name" required><br>
+        <label for="articleNumber">Article Number:</label>
+        <input type="text" id="articleNumber" required><br>
+        <label for="price">Price:</label>
+        <input type="number" id="price" required><br>
+        <label for="description">Description:</label>
+        <textarea id="description" required></textarea><br>
+        <button type="submit">Add Product</button>
+    </form>
+
+    <h2>Update Product</h2>
+    <form id="updateItemForm">
+        <label for="updateArticleNumber">Article Number:</label>
+        <input type="text" id="updateArticleNumber" required><br>
+        <label for="updateName">Product Name:</label>
+        <input type="text" id="updateName"><br>
+        <label for="updatePrice">Price:</label>
+        <input type="number" id="updatePrice"><br>
+        <label for="updateDescription">Description:</label>
+        <textarea id="updateDescription"></textarea><br>
+        <button type="submit">Update Product</button>
+    </form>
+
+    <h2>Delete Product</h2>
+    <label for="deleteArticleNumber">Article Number:</label>
+    <input type="text" id="deleteArticleNumber">
+    <button onclick="deleteItem()">Delete Product</button>
+
+    <script src="/admin.js"></script>
+</body>
+</html>
