@@ -37,6 +37,9 @@ Changes made in Admin mode are saved to `industrial.json` and are immediately re
 
 A simple Express.js application to manage inventory items and customer orders. This API reads, writes, and updates data from JSON files and provides endpoints for handling items and orders.
 
+### Home Endpoint
+- **GET /** - Serves the `index.html` file as the homepage.
+
 ### Item Endpoints
 - **GET /items** - Returns a list of all items in the inventory.
 - **GET /item/:articleNumber** - Fetches an item by `articleNumber`.
